@@ -51,3 +51,12 @@ li {
     padding: 5px;
     border-bottom: 1px solid #ccc;
 }
+
+li span {
+    flex:1;
+    word-break: break-word;
+}
+
+li button {
+    width: auto;
+}
