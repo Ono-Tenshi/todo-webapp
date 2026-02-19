@@ -89,12 +89,14 @@ function createTodoElement(text, doneState = false, deadline = null) {
 
 addBtn.addEventListener("click", function () {
     const text = input.value.trim();
+    const deadline = deadlineInput.value;
     if (!text) return;
 
-    createTodoElement(text);
+    createTodoElement(text, false, deadline);
     updateSummary();
     saveTodos();
     input.value = "";
+    deadlineInput.value = "";
 });
 
 setInterval(() => {
