@@ -60,3 +60,8 @@ li span {
 li button {
     width: auto;
 }
+
+#deadlineInput {
+    width: 100%;
+    max-width: 100%;
+}
