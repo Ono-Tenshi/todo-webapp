@@ -8,6 +8,19 @@ window.addEventListener("load", () => {
     alert("通知状態: " + Notification.permission);
 });
 
+const enableBtn = document.getElementById("enableNotificationBtn");
+
+enableBtn.addEventListener("click", () => {
+    if (!("Notification" in window)) {
+        alert("このブラウザは通知に対応していません");
+        return;
+    }
+
+    Notification.requestPermission().then(permission => {
+        alert("通知状態: " + permission);
+    });
+});
+
 
 const input = document.getElementById("todoInput");
 const addBtn = document.getElementById("addBtn");
