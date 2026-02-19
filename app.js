@@ -1,6 +1,13 @@
+if ("Notification" in window) {
+    Notification.requestPermission().then(permission => {
+        console.log("通知許可:", permission);
+    });
+}
+
 const input = document.getElementById("todoInput");
 const addBtn = document.getElementById("addBtn");
 const list = document.getElementById("todoList");
+const deadlineInput = document.getElementById("deadlineInput");
 
 function updateSummary() {
     const total = list.children.length; // liの総数
@@ -14,7 +21,11 @@ function saveTodos() {
     const todos = [];
     list.querySelectorAll("li").forEach(li => {
         const span = li.querySelector("span");
-        todos.push({ text: span.textContent, done: span.classList.contains("done") });
+        todos.push({
+            text: span.textContent,
+            done: span.classList.contains("done"),
+            deadline: li.dataset.deadline || null
+        });
     });
     localStorage.setItem("todos", JSON.stringify(todos));
 }
@@ -22,11 +33,11 @@ function saveTodos() {
 function loadTodos() {
     // 保存していたタスクを取得
     const todos = JSON.parse(localStorage.getItem("todos")) || [];
-    
+
     // 配列を順番に処理して画面に表示
     todos.forEach(todo => {
         // createTodoElement に文字と完了状態を渡す
-        createTodoElement(todo.text, todo.done);
+        createTodoElement(todo.text, todo.done, todo.deadline);
     });
 
     // 日数表示も更新
@@ -35,7 +46,7 @@ function loadTodos() {
 
 window.addEventListener("load", loadTodos);
 
-function createTodoElement(text, doneState = false) {
+function createTodoElement(text, doneState = false, deadline = null) {
     const li = document.createElement("li");
 
     const span = document.createElement("span");
@@ -47,7 +58,7 @@ function createTodoElement(text, doneState = false) {
 
     const doneBtn = document.createElement("button");
     doneBtn.textContent = "完了";
-    doneBtn.addEventListener("click", function() {
+    doneBtn.addEventListener("click", function () {
         span.classList.toggle("done");
         span.style.textDecoration = span.classList.contains("done") ? "line-through" : "none";
         updateSummary();
@@ -56,11 +67,19 @@ function createTodoElement(text, doneState = false) {
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "削除";
-    deleteBtn.addEventListener("click", function() {
+    deleteBtn.addEventListener("click", function () {
         list.removeChild(li);
         updateSummary();
         saveTodos();
     });
+
+    if (deadline) {
+        li.dataset.deadline = deadline;
+
+        const deadlineSpan = document.createElement("small");
+        deadlineSpan.textContent = "期限:" + new Date(deadline).toLocaleString();
+        li.appendChild(deadlineSpan);
+    }
 
     li.appendChild(span);
     li.appendChild(doneBtn);
@@ -77,3 +96,27 @@ addBtn.addEventListener("click", function () {
     saveTodos();
     input.value = "";
 });
+
+setInterval(() => {
+    const now = new Date();
+
+    document.querySelectorAll("li").forEach(li => {
+        const deadline = li.dataset.deadline;
+        const span = li.querySelector("span");
+
+        if (!deadline) return;
+        if (span.classList.contains("done")) return;
+
+        const deadlineDate = new Date(deadline);
+
+        if (deadlineDate <= now && !li.dataset.notified) {
+
+            new Notification("⏰ 期限です！", {
+                body: span.textContent
+            });
+
+            li.dataset.notified = "true";
+        }
+    });
+
+}, 10000);
