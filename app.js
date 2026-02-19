@@ -1,13 +1,3 @@
-
-
-window.addEventListener("load", () => {
-    navigator.serviceWorker.getRegistration().then(reg => {
-    alert("SW登録状態: " + (reg ? "あり" : "なし"));
-});
-
-    alert("通知状態: " + Notification.permission);
-});
-
 const enableBtn = document.getElementById("enableNotificationBtn");
 
 if (enableBtn) {
@@ -116,7 +106,6 @@ addBtn.addEventListener("click", function () {
 });
 
 setInterval(() => {
-    console.log("チェック中");
     const now = new Date();
 
     document.querySelectorAll("li").forEach(li => {
@@ -127,10 +116,6 @@ setInterval(() => {
         if (span.classList.contains("done")) return;
 
         const deadlineDate = new Date(deadline);
-
-        if (deadlineDate <= now) {
-            console.log("期限到達！");
-        }
 
         if (deadlineDate <= now && !li.dataset.notified) {
 
