@@ -3,6 +3,9 @@ if ("Notification" in window) {
         console.log("通知許可:", permission);
     });
 }
+navigator.serviceWorker.getRegistration().then(reg => {
+    alert("SW登録状態: " + (reg ? "あり" : "なし"));
+});
 
 window.addEventListener("load", () => {
     alert("通知状態: " + Notification.permission);
