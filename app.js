@@ -4,6 +4,11 @@ if ("Notification" in window) {
     });
 }
 
+window.addEventListener("load", () => {
+    alert("通知状態: " + Notification.permission);
+});
+
+
 const input = document.getElementById("todoInput");
 const addBtn = document.getElementById("addBtn");
 const list = document.getElementById("todoList");
