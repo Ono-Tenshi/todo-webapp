@@ -1,28 +1,23 @@
-if ("Notification" in window) {
-    Notification.requestPermission().then(permission => {
-        console.log("通知許可:", permission);
-    });
-}
-navigator.serviceWorker.getRegistration().then(reg => {
+
+
+window.addEventListener("load", () => {
+    navigator.serviceWorker.getRegistration().then(reg => {
     alert("SW登録状態: " + (reg ? "あり" : "なし"));
 });
 
-window.addEventListener("load", () => {
     alert("通知状態: " + Notification.permission);
 });
 
 const enableBtn = document.getElementById("enableNotificationBtn");
 
-enableBtn.addEventListener("click", () => {
-    if (!("Notification" in window)) {
-        alert("このブラウザは通知に対応していません");
-        return;
-    }
-
-    Notification.requestPermission().then(permission => {
-        alert("通知状態: " + permission);
+if (enableBtn) {
+    enableBtn.addEventListener("click", () => {
+        Notification.requestPermission().then(permission => {
+            alert("通知状態: " + permission);
+        });
     });
-});
+}
+
 
 
 const input = document.getElementById("todoInput");
