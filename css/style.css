@@ -66,7 +66,7 @@ li button {
     font-size: 18px;       /* 他のinputと揃える */
     padding: 12px;         /* 高さと余白 */
     margin: 5px 0;         /* 上下の余白 */
-    width: 100%;           /* 幅いっぱい */
+    width: auto;           /* 幅いっぱい */
     box-sizing: border-box;
     border-radius: 8px;    /* 角丸 */
     border: 1px solid #ccc;/* 枠線 */
