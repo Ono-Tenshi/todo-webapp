@@ -4,6 +4,10 @@ if (enableBtn) {
     enableBtn.addEventListener("click", () => {
         Notification.requestPermission().then(permission => {
             alert("通知状態: " + permission);
+
+            if (permission === "granted") {
+                deadlineInput.focus();
+            }
         });
     });
 }
